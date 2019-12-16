@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Artech Info System Test</string>
+
+    <string name="no_data_available">No Data Available</string>
+    <string name="some_error_occurred">Some Error Occurred</string>
+
+    <string name="na">NA</string>
+</resources>
