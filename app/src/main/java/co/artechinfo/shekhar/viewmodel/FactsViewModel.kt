@@ -1,23 +1,28 @@
 package co.artechinfo.shekhar.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import co.artechinfo.shekhar.model.Fact
 
-class FactsViewModel(private val factsRepository: FactsRepository) : ViewModel() {
+open class FactsViewModel(val factsRepository: FactsRepository) : ViewModel() {
 
-    private val reloadTrigger = MutableLiveData<Boolean>()
-    private val users: LiveData<List<Fact>> = Transformations.switchMap(reloadTrigger) {
-        factsRepository.fetchFactsLiveData()
+    lateinit var context: Context
+    val reloadTrigger = MutableLiveData<Boolean>()
+    val facts: LiveData<List<Fact>> = Transformations.switchMap(reloadTrigger) {
+        factsRepository.fetchFactsLiveData(context, reloadTrigger.value!!)
     }
 
     init {
-        refreshFacts()
+        reloadTrigger.value = false
     }
 
-    fun fetchFactsData(): LiveData<List<Fact>> = users
+    fun fetchFactsData(activity: Context): LiveData<List<Fact>> {
+        context = activity
+        return facts
+    }
 
     fun refreshFacts() {
         reloadTrigger.value = true

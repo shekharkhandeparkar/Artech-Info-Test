@@ -5,4 +5,7 @@
     <string name="some_error_occurred">Some Error Occurred</string>
 
     <string name="na">NA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

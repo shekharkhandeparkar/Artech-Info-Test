@@ -6,7 +6,8 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 
@@ -29,8 +30,12 @@ interface RestApiService {
                 .build()
 
             return Retrofit.Builder()
+                .addCallAdapterFactory(
+                    RxJava2CallAdapterFactory.create())
+                .addConverterFactory(NullOnEmptyConverterFactory.create())
+                .addConverterFactory(
+                    GsonConverterFactory.create())
                 .baseUrl(baseURL)
-                .addConverterFactory(MoshiConverterFactory.create())
                 .client(okHttpClient)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
