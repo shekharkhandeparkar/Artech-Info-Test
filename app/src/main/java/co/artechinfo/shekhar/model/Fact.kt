@@ -7,7 +7,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-
+/*
+* Fact class for the data fetching from server
+* also used as room db entity
+* */
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "fact")
 data class Fact(

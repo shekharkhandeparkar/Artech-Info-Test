@@ -1,16 +1,17 @@
 package co.artechinfo.shekhar.view
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import co.artechinfo.shekhar.R
-
+/*
+* SplashFragment Fragment class
+* for splashscreen (if required - created to demo navigation component & use of fragment)
+* */
 class SplashFragment : Fragment() {
 
     override fun onCreateView(
@@ -23,8 +24,7 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        ivSplash.setImageResource(R.drawable.ic_launcher_background)
-
+        // navigate to other fragment
         val navController = Navigation.findNavController(
             activity!!,
             R.id.app_nav_host_fragment

@@ -1,22 +1,25 @@
 package co.artechinfo.shekhar.viewmodel
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import co.artechinfo.shekhar.model.Fact
-import co.artechinfo.shekhar.networking.NoConnectivityException
+import co.artechinfo.shekhar.model.FactDatabaseRepository
 import co.artechinfo.shekhar.networking.RestApiService
 import kotlinx.coroutines.*
 import retrofit2.HttpException
-import androidx.lifecycle.LiveData
-import co.artechinfo.shekhar.model.FactDatabaseRepository
 
+/*
+* FactsRepository class
+* repository for fetching data
+* */
 open class FactsRepository(context: Context) {
 
+    // variable declaration & initialisation
     private var mContext: Context = context
-
     private var facts = mutableListOf<Fact>()
     private var mutableFactsLiveData = MutableLiveData<List<Fact>>()
-    val mRequestTimeout = MutableLiveData<Boolean>()
+    private val mRequestTimeout = MutableLiveData<Boolean>()
     private val completableJob = Job()
     var factDatabaseRepository = FactDatabaseRepository(context)
     private val coroutinesScope = CoroutineScope(Dispatchers.IO + completableJob)
@@ -26,6 +29,7 @@ open class FactsRepository(context: Context) {
     }
 
     private val thisApiCorService by lazy {
+        // lazy instance of retrofit client
         RestApiService.createService(mContext)
     }
 
@@ -33,41 +37,31 @@ open class FactsRepository(context: Context) {
         return mRequestTimeout
     }
 
-    fun fetchFactsLiveData(context: Context, value: Boolean): MutableLiveData<List<Fact>> {
-
-        println("value $value")
-        var factsDb: List<Fact> = arrayListOf()
+    fun fetchFactsLiveDataFromDB(): MutableLiveData<List<Fact>> {       // fetch data from db
+        val factsDb: List<Fact>
         if (factDatabaseRepository != null) {
             factsDb = factDatabaseRepository.getAllFacts()
-        }
-        when {
-            value -> fetch(context)
-            factsDb.isNotEmpty() -> {
-                facts = factsDb.toMutableList()
-                mutableFactsLiveData.value = facts
-            }
-            else -> fetch(context)
+            facts = factsDb.toMutableList()
+            mutableFactsLiveData.value = facts
         }
 
         return mutableFactsLiveData
     }
 
-    fun fetch(context: Context) {
-        mRequestTimeout.value = false
-        coroutinesScope.launch {
+    fun fetchFactsLiveDataFromServer(): MutableLiveData<List<Fact>> {   // fetch data from server
+        val serverJob = coroutinesScope.async {
             val request = thisApiCorService.fetchFactsAsync()
             withContext(Dispatchers.IO) {
                 try {
                     val response = request.await()
                     if (response.rows != null) {
                         facts = response.rows as MutableList<Fact>
-                        mutableFactsLiveData.value = facts
-
-                        factDatabaseRepository.refreshFacts(facts)
+                        GlobalScope.launch(Dispatchers.Main) {
+                            // make operations on main thread
+                            mutableFactsLiveData.value = facts
+                            factDatabaseRepository.refreshFacts(facts)
+                        }
                     }
-                } catch (e: NoConnectivityException) {
-                    e.printStackTrace()
-                    errorOccurred()
                 } catch (e: HttpException) {
                     e.printStackTrace()
                     errorOccurred()
@@ -77,9 +71,11 @@ open class FactsRepository(context: Context) {
                 }
             }
         }
+
+        return mutableFactsLiveData
     }
 
-    private fun errorOccurred() {
+    private fun errorOccurred() {                                       // for error handling
         GlobalScope.launch(Dispatchers.Main) {
             mRequestTimeout.value = true
         }

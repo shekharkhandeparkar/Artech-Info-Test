@@ -6,6 +6,10 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
+/*
+* NetworkConnectionInterceptor class
+* for network connections
+* */
 class NetworkConnectionInterceptor(context: Context) : Interceptor {
 
     private var mContext: Context = context

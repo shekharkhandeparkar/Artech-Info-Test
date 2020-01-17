@@ -1,12 +1,14 @@
 package co.artechinfo.shekhar.networking
 
-
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
 
-
+/*
+* NullOnEmptyConverterFactory class
+* for handling null values
+* */
 class NullOnEmptyConverterFactory private constructor() : Converter.Factory() {
 
     override fun responseBodyConverter(

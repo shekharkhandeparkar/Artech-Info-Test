@@ -42,7 +42,7 @@ class FactsTest {
 
     @Test
     fun testFactList2() {
-        verify(vm)?.factsRepository?.fetch(context!!)
+        verify(vm)?.factsRepository?.fetchFactsLiveDataFromServer()
         assert(vm?.facts?.value?.size != 0)
     }
 

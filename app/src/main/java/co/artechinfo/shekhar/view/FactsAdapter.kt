@@ -12,11 +12,16 @@ import co.artechinfo.shekhar.model.Fact
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
+/*
+* FactsAdapter class
+* adapter class for binding data to recyclerview
+* */
 class FactsAdapter(private val factList: List<Fact>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mContext: Context? = null
 
+    // default placeholder
     var requestOptions = RequestOptions()
         .placeholder(R.mipmap.ic_launcher)
 
@@ -48,6 +53,9 @@ class FactsAdapter(private val factList: List<Fact>) :
             .into(factViewHolder.ivImageHref)
     }
 
+    /*
+    * FactViewHolder class
+    * */
     class FactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)

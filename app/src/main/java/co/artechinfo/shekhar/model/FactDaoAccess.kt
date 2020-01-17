@@ -1,25 +1,19 @@
 package co.artechinfo.shekhar.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
+/*
+* FactDaoAccess class
+* for accessing the data from db
+* */
 @Dao
 interface FactDaoAccess {
     @Insert
-    fun insertFact(fact: Fact): Long?
+    fun insertFact(fact: Fact): Long?                        // insert a fact in database
 
-    @Query("SELECT * FROM Fact ORDER BY id asc")
+    @Query("SELECT * FROM Fact ORDER BY id asc")      // fetch all facts from database
     fun fetchAllFacts(): List<Fact>
 
-    @Query("SELECT * FROM Fact WHERE id =:factId")
-    fun getFact(factId: Int): Fact
-
-    @Update
-    fun updateFact(fact: Fact)
-
-    @Delete
-    fun deleteFact(fact: Fact)
-
-    @Query("DELETE FROM Fact")
+    @Query("DELETE FROM Fact")                        // delete all facts from database
     fun deleteAllFacts()
 }
