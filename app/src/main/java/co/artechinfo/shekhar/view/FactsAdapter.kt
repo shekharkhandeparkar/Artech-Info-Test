@@ -50,6 +50,7 @@ class FactsAdapter(private val factList: List<Fact>) :
         Glide.with(factViewHolder.itemView.context)
             .setDefaultRequestOptions(requestOptions)
             .load(mFact.imageHref)
+            .fitCenter()
             .into(factViewHolder.ivImageHref)
     }
 
