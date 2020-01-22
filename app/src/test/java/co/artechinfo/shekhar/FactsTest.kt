@@ -43,30 +43,18 @@ class FactsTest {
 
     @Test
     fun testFactList2() {
-        verify(vm)?.factsRepository?.fetchFactsLiveDataFromServer()
-        assert(vm?.facts?.value?.size != 0)
-    }
-
-    @Test
-    fun testFactList3() {
         verify(vm)?.facts?.value?.isEmpty()
         assert(vm?.facts?.value?.size != 0)
     }
 
     @Test
-    fun testFactList4() {
-        verify(vm)?.factsRepository?.factDatabaseRepository?.getAllFacts()
-        assert(vm?.facts?.value?.size != 0)
-    }
-
-    @Test
-    fun testFactList5() {
+    fun testFactList3() {
         val hasFacts = vm?.factsRepository?.factDatabaseRepository?.getAllFacts()
         assert(hasFacts == null)
     }
 
     @Test
-    fun testFactList6() {
+    fun testFactList4() {
         val count = vm?.factsRepository?.factDatabaseRepository?.getAllFacts()?.size
         assert(count != 0)
     }
