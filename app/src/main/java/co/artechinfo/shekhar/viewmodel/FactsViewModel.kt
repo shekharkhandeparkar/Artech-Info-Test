@@ -10,7 +10,7 @@ import co.artechinfo.shekhar.model.Fact
 /*
 * FactsViewModel class
 * */
-open class FactsViewModel(val factsRepository: FactsRepository) : ViewModel() {
+open class FactsViewModel(var factsRepository: FactsRepository) : ViewModel() {
 
     lateinit var context: Context
     private val reloadTrigger = MutableLiveData<Boolean>()
@@ -20,7 +20,7 @@ open class FactsViewModel(val factsRepository: FactsRepository) : ViewModel() {
     }
 
     init {
-        reloadTrigger.value = false
+        reloadTrigger.value = true
     }
 
     /*

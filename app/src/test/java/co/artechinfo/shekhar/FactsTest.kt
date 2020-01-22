@@ -36,6 +36,7 @@ class FactsTest {
 
     @Test
     fun testFactList1() {
+        vm?.factsRepository = repo!!
         verify(vm)?.fetchFactsData(context!!)
         assert(vm?.facts?.value?.size != 0)
     }

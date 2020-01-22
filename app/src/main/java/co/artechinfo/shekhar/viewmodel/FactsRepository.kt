@@ -20,9 +20,9 @@ open class FactsRepository(context: Context) {
     private var facts = mutableListOf<Fact>()
     private var mutableFactsLiveData = MutableLiveData<List<Fact>>()
     private val mRequestTimeout = MutableLiveData<Boolean>()
-    private val completableJob = Job()
+    private var completableJob = Job()
     var factDatabaseRepository = FactDatabaseRepository(context)
-    private val coroutinesScope = CoroutineScope(Dispatchers.IO + completableJob)
+    private var coroutinesScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     init {
         mRequestTimeout.value = false
@@ -49,6 +49,12 @@ open class FactsRepository(context: Context) {
     }
 
     fun fetchFactsLiveDataFromServer(): MutableLiveData<List<Fact>> {   // fetch data from server
+        if (coroutinesScope == null) {
+            if (completableJob == null) {
+                completableJob = Job()
+            }
+            coroutinesScope = CoroutineScope(Dispatchers.IO + completableJob)
+        }
         val serverJob = coroutinesScope.async {
             val request = thisApiCorService.fetchFactsAsync()
             withContext(Dispatchers.IO) {
