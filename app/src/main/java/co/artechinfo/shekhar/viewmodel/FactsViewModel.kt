@@ -13,7 +13,7 @@ import co.artechinfo.shekhar.model.Fact
 open class FactsViewModel(var factsRepository: FactsRepository) : ViewModel() {
 
     lateinit var context: Context
-    private val reloadTrigger = MutableLiveData<Boolean>()
+    var reloadTrigger = MutableLiveData<Boolean>()
     var facts: LiveData<List<Fact>> = Transformations.switchMap(reloadTrigger) {
         //fetch default data
         factsRepository.fetchFactsLiveDataFromDB()

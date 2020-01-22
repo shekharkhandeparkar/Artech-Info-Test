@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 open class FactDatabaseRepository(context: Context) {
 
     private val DB_NAME = "db_facts"
-    private val factDatabase: FactDatabase
+    var factDatabase: FactDatabase
 
     init {
         factDatabase = Room.databaseBuilder(context, FactDatabase::class.java, DB_NAME).build()

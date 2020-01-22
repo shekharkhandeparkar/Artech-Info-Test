@@ -77,7 +77,6 @@ open class FactsRepository(context: Context) {
                 }
             }
         }
-
         return mutableFactsLiveData
     }
 
