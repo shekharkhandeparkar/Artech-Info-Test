@@ -21,7 +21,8 @@
     <ImageView
         android:id="@+id/ivImageHref"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:minHeight="80dp"
         android:background="@android:color/black"
         android:contentDescription="@string/app_name"
         android:src="@mipmap/ic_launcher"
