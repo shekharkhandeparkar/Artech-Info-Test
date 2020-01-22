@@ -25,10 +25,10 @@ class FactsTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    lateinit var vm:FactsViewModel
+    private lateinit var vm:FactsViewModel
     @Mock
     var context: Context? = null
-    lateinit var repo: FactsRepository
+    private lateinit var repo: FactsRepository
     var factDatabaseRepository:FactDatabaseRepository = mock()
     @Mock
     var appDatabase: FactDatabase = mock()
@@ -46,14 +46,28 @@ class FactsTest {
     }
 
     @Test
+    fun testFactList11(){
+        Mockito.`when`(appDatabase.daoAccess())
+            .thenReturn(factInfoDao)
+        Mockito.`when`(appDatabase.daoAccess().fetchAllFacts())
+            .thenReturn(facts)
+        println(facts)
+        val lesss = vm.factsRepository.fetchFactsLiveDataFromServer()
+        println(facts)
+        println(lesss)
+    }
+
+    @Test
     fun testResponseSize() {
         initDummy()
         Mockito.`when`(appDatabase.daoAccess())
             .thenReturn(factInfoDao)
         Mockito.`when`(appDatabase.daoAccess().fetchAllFacts())
             .thenReturn(facts)
+        println(facts)
         vm.fetchFactsData(context!!)
         Assert.assertNotNull(vm.facts)
+        println(facts)
         Assert.assertEquals(2, vm.facts.value!!.size)
     }
 
@@ -69,14 +83,6 @@ class FactsTest {
         Assert.assertEquals("Fact Description", vm.facts.value!![0].description)
     }
 
-    private fun initDummy() {
-        val fact = Fact()
-        fact.title = "Fact Title"
-        fact.description = "Fact Description"
-        facts.add(fact)
-        facts.add(Fact())
-    }
-
     @Test
     fun testFactList1(){
         vm.factsRepository = repo
@@ -88,5 +94,12 @@ class FactsTest {
         assert(vm.facts.value?.size!=0)
     }
 
+    private fun initDummy() {
+        val fact = Fact()
+        fact.title = "Fact Title"
+        fact.description = "Fact Description"
+        facts.add(fact)
+        facts.add(Fact())
+    }
 
 }
